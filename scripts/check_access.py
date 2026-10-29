@@ -55,6 +55,12 @@ def summarize_lark(payload):
         name: {"missing_scopes": [scope for scope in required if scope not in granted]}
         for name, required in REQUIRED.items()
     }
+    # The backend accepts either read-only or existing full message access.
+    # Recommend only read-only when neither is granted.
+    categories["message_backend"] = {
+        "missing_scopes": [] if granted.intersection({"im:message:readonly", "im:message"})
+        else ["im:message:readonly"]
+    }
     return {
         "state": status,
         "authenticated_for_read_attempt": authenticated,

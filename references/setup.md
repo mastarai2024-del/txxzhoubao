@@ -31,11 +31,14 @@ npm 包本身安装 CLI；完整 `install` 向导还可能安装官方技能、�
 | 知识空间/节点 | `wiki:space:read` / `wiki:space:retrieve`、`wiki:node:read` / `wiki:node:retrieve`，由具体接口决定 |
 | 消息搜索 | `search:message`；部分 CLI 即使禁用 reactions 也在预检要求 `im:message.reactions:read` |
 | 消息正文（用户身份） | 当前批量读取和群历史命令均要求 `im:message.group_msg:get_as_user`、`im:message.p2p_msg:get_as_user`；即使只查询群聊，工具也会同时校验两项，授权前向用户说明 |
+| 消息服务正文接口 | 工具预检之后，服务还可能要求 `im:message:readonly` 或 `im:message`。这是二选一，新增授权只申请 `im:message:readonly`；若已有完整消息权限，无需另补只读权限 |
 | 日历事件 | `calendar:calendar.event:read` |
 | 妙记搜索/详情 | `minutes:minutes.search:read`、`minutes:minutes.basic:read`；逐字稿额外权限依实际接口处理 |
 | 妙记产物 | `minutes:minutes.artifacts:read`，用于摘要、待办及逐字稿；基础详情权限只返回标题等信息 |
 
 先从当前帮助、内置说明和实际错误把拟用的搜索、正文、产物命令分别核对，再合并必要权限。`messages-search` 可能返回 `ok:true`，却只有消息ID及“正文获取失败”说明；妙记搜索或标题读取成功也不代表产物可读。上述两种情况均不能记为正文验收通过。授权后每一路仍做真实读取，若接口再报权限缺口，保留原错误并说明，不预先扩大到全部权限。
+
+消息读取存在“工具预检”和“消息服务”两层门槛。初次配置把已确认需要的搜索、用户消息读取、消息服务只读及妙记产物权限一起核对，再合并当前缺失项。服务报错列出的 `im:message:readonly, im:message` 是替代关系；已知群历史报错还可能列出 `im:message.history:readonly`，同一项 `im:message:readonly` 也可覆盖该候选门槛，不机械追加全部候选。
 
 同一次协作授权可合并已确认缺失的读取 scope。每个接口返回的候选权限可能是任选其一，勿机械把全部候选都申请。不要申请整个域或 `all`，也不为周报预先申请发送、删除、移动和成员管理权限。
 

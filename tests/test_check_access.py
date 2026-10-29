@@ -50,6 +50,16 @@ class CheckAccessTests(unittest.TestCase):
         self.assertEqual(result["categories"]["minutes_artifacts"]["missing_scopes"],
                          ["minutes:minutes.artifacts:read"])
 
+    def test_backend_alternatives_request_only_read_access(self):
+        for scope in ("im:message:readonly", "im:message"):
+            result = access.summarize_lark({"identities": {"user": {
+                "status": "ready", "scope": scope
+            }}})
+            self.assertEqual(result["categories"]["message_backend"]["missing_scopes"], [])
+        result = access.summarize_lark({"identities": {"user": {"status": "ready"}}})
+        self.assertEqual(result["categories"]["message_backend"]["missing_scopes"],
+                         ["im:message:readonly"])
+
     @patch.object(access.shutil, "which", return_value="fake-cli")
     @patch.object(access.subprocess, "run")
     def test_cli_error_does_not_echo_server_text(self, run, which):

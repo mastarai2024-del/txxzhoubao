@@ -4,7 +4,7 @@
 
 ## 在另一台电脑安装
 
-登录有权访问本私有仓库的 GitHub 账号后，把下面这段话发给那台电脑的 Codex：
+把下面这段话发给那台电脑的 Codex；仓库为私有时，先登录有访问权限的 GitHub 账号：
 
 ```text
 使用 skill-installer，将 GitHub 仓库 mastarai2024-del/txxzhoubao 根目录的技能安装为 txxzhoubao。按 references/setup.md 检查并接入飞书协作和飞书项目，复用本机已有应用与登录；只申请周报必需且尚未授予的读取权限。运行 scripts/check_access.py，说明哪些来源仍需实际读取验证。个人周报地址和身份只保存在本机私有配置，不提交到仓库。

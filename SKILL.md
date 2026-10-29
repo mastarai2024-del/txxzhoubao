@@ -2,7 +2,7 @@
 name: txxzhoubao
 description: 为 Codex 收集飞书文档、知识库、群聊、会议、日历及飞书项目中的本人工作，沿用上期格式撰写周报或月报。适用于工作总结、上期计划复盘及明确授权的周报单元格更新。
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # 飞书周报与月报
