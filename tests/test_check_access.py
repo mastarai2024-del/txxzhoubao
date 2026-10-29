@@ -38,6 +38,18 @@ class CheckAccessTests(unittest.TestCase):
         self.assertEqual(result["state"], "login_required")
         self.assertEqual(result["resource_access"], "not_tested")
 
+    def test_search_grants_do_not_imply_body_or_artifact_access(self):
+        scopes = "search:docs:read search:message im:message.reactions:read calendar:calendar.event:read minutes:minutes.search:read minutes:minutes.basic:read"
+        result = access.summarize_lark({"identities": {"user": {
+            "status": "ready", "verified": True, "scope": scopes
+        }}})
+        self.assertEqual(result["categories"]["message_search"]["missing_scopes"], [])
+        self.assertEqual(result["categories"]["message_body"]["missing_scopes"], [
+            "im:message.group_msg:get_as_user", "im:message.p2p_msg:get_as_user"
+        ])
+        self.assertEqual(result["categories"]["minutes_artifacts"]["missing_scopes"],
+                         ["minutes:minutes.artifacts:read"])
+
     @patch.object(access.shutil, "which", return_value="fake-cli")
     @patch.object(access.subprocess, "run")
     def test_cli_error_does_not_echo_server_text(self, run, which):

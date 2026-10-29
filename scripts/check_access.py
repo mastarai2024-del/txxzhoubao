@@ -9,9 +9,11 @@ import subprocess
 REQUIRED = {
     "document_search": ("search:docs:read",),
     "message_search": ("search:message", "im:message.reactions:read"),
+    "message_body": ("im:message.group_msg:get_as_user", "im:message.p2p_msg:get_as_user"),
     "calendar": ("calendar:calendar.event:read",),
     "minutes_search": ("minutes:minutes.search:read",),
     "minutes_detail": ("minutes:minutes.basic:read",),
+    "minutes_artifacts": ("minutes:minutes.artifacts:read",),
 }
 
 
